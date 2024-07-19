@@ -1,15 +1,20 @@
-import streamlit as st
+import os
+import time
+
 from mlx_lm import load, generate, stream_generate
 from mlx_lm.utils import generate_step
-import time
+import streamlit as st
+from dotenv import load_dotenv, find_dotenv
+
 
 st.set_page_config(page_title="Local MLX Chatbot", page_icon=":robot_face:", layout="wide")
 
 # Cache the model loading to avoid reloading every time
 @st.cache_resource
 def load_model():
-    MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
-    ADAPTER = None
+    load_dotenv(find_dotenv())
+    MODEL = os.getenv("MODEL")
+    ADAPTER = os.getenv("ADAPTER", None)
 
     if ADAPTER:
         model, tokenizer = load(path_or_hf_repo=MODEL, adapter_path=ADAPTER)
@@ -20,23 +25,6 @@ def load_model():
 
 model, tokenizer = load_model()
 
-def remove_tag(response_generator):
-    tag_start = "<|start_header_id|>assistant<|end_header_id|>"
-    tag_buffer = ""
-    
-    for token in response_generator:
-        tag_buffer += token
-        
-        if tag_start in tag_buffer:
-            tag_buffer = tag_buffer[len(tag_start):]
-        
-        if len(tag_buffer) > len(tag_start):
-            yield tag_buffer[:len(tag_buffer) - len(tag_start)]
-            tag_buffer = tag_buffer[-len(tag_start):]
-    
-    if tag_buffer:
-        yield tag_buffer
-
 def generate_response_streaming(prompt: str, temp: float, max_tokens: int):
     response_generator = stream_generate(
         model, 
@@ -46,9 +34,7 @@ def generate_response_streaming(prompt: str, temp: float, max_tokens: int):
         temp=temp
     )
     
-    # for token in response_generator:
-    #     yield token
-    for token in remove_tag(response_generator):
+    for token in response_generator:
         yield token
 
 if 'messages' not in st.session_state:
@@ -82,7 +68,7 @@ if prompt:
     full_response = ""
     token_count = 0
 
-    for token in generate_response_streaming(formatted_conversation, temp=0.0, max_tokens=1000):
+    for token in generate_response_streaming(formatted_conversation, temp=0.0, max_tokens=2048):
         full_response += token
         token_count += 1
         assistant_message.markdown(full_response)
