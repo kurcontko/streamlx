@@ -13,4 +13,4 @@ pip install -r requirements.txt
 
 # Run the Streamlit application
 echo 'Running the Streamlit application'
-streamlit run streamlit_app.py --server.port 7860
+streamlit run app.py --server.port 7860
