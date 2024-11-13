@@ -54,3 +54,9 @@ STREAMLIT_PORT=7860
 - MLX
 - Streamlit
 - See `requirements.txt`
+
+## Roadmap
+
+- Conversation Export/Import
+- Lite Chat History
+- Sliding context window based on tokens
