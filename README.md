@@ -1,4 +1,4 @@
-# MLX Chat
+# StreaMLX
 
 A simple chat interface for MLX served LLMs built with Streamlit.
 
