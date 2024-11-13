@@ -1,4 +1,6 @@
-huggingface_hub 
-mlx-lm
-streamlit
-python-dotenv
+huggingface_hub>=0.25.0
+mlx-lm>=0.19.2
+streamlit>=1.24.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+sseclient-py>=1.7.2
