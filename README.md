@@ -7,7 +7,7 @@ A simple chat interface for MLX served LLMs built with Streamlit.
 1. Clone and install:
 ```bash
 git clone https://github.com/kurcontko/mlx-chat.git
-cd mlx-chat
+cd streamlx
 ```
 
 2. Run:
