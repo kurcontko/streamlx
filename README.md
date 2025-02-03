@@ -60,3 +60,5 @@ STREAMLIT_PORT=7860
 - Conversation Export/Import
 - Lite Chat History
 - Sliding context window based on tokens
+- Model selection in UI
+
